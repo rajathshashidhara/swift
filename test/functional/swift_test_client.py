@@ -197,7 +197,7 @@ class Connection(object):
         """
         Retrieve the data in /info, or {} on 404
         """
-        status = self.make_request('GET', '/info',
+        status = self.make_request('GET', '/swift/info',
                                    cfg={'absolute_path': True})
         if status // 100 == 4:
             return {}
@@ -460,7 +460,7 @@ class Account(Base):
     def delete_containers(self):
         for c in listing_items(self.containers):
             cont = self.container(c)
-            cont.update_metadata(hdrs={'x-versions-location': ''})
+            #cont.update_metadata(hdrs={'x-versions-location': ''})
             if not cont.delete_recursive():
                 return False
 

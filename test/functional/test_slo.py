@@ -57,6 +57,7 @@ class TestSloEnv(BaseEnv):
 
     @classmethod
     def setUp(cls):
+        cls.slo_enabled = None
         if cls.slo_enabled is None:
             cls.slo_enabled = 'slo' in cluster_info
             if not cls.slo_enabled:
@@ -189,22 +190,22 @@ class TestSloEnv(BaseEnv):
         file_item = cls.container.file("manifest-db")
         file_item.write(
             json.dumps([
-                {'path': seg_info['seg_d']['path'], 'etag': None,
-                 'size_bytes': None},
-                {'path': seg_info['seg_b']['path'], 'etag': None,
-                 'size_bytes': None},
+                {'path': seg_info['seg_d']['path'], 'etag': seg_info['seg_d']['etag'],
+                 'size_bytes': seg_info['seg_d']['size_bytes']},
+                {'path': seg_info['seg_b']['path'], 'etag': seg_info['seg_b']['etag'],
+                 'size_bytes': seg_info['seg_b']['size_bytes']},
             ]), parms={'multipart-manifest': 'put'})
 
-        file_item = cls.container.file("ranged-manifest-repeated-segment")
-        file_item.write(
-            json.dumps([
-                {'path': seg_info['seg_a']['path'], 'etag': None,
-                 'size_bytes': None, 'range': '-1048578'},
-                {'path': seg_info['seg_a']['path'], 'etag': None,
-                 'size_bytes': None},
-                {'path': seg_info['seg_b']['path'], 'etag': None,
-                 'size_bytes': None, 'range': '-1048578'},
-            ]), parms={'multipart-manifest': 'put'})
+        #file_item = cls.container.file("ranged-manifest-repeated-segment")
+        #file_item.write(
+            #json.dumps([
+                #{'path': seg_info['seg_a']['path'], 'etag': None,
+                 #'size_bytes': None, 'range': '-1048578'},
+                #{'path': seg_info['seg_a']['path'], 'etag': None,
+                 #'size_bytes': None},
+                #{'path': seg_info['seg_b']['path'], 'etag': None,
+                 #'size_bytes': None, 'range': '-1048578'},
+            #]), parms={'multipart-manifest': 'put'})
 
 
 class TestSlo(Base):
